@@ -45,7 +45,7 @@ publishing {
         create<MavenPublication>("java") {
             pom {
                 description.set("todo")
-                url.set("https://github.com/m4gshm/spring-data-mock")
+                url.set("https://github.com/m4gshm/spring-data-auto-mock")
                 properties.put("maven.compiler.target", "${java.targetCompatibility}")
                 properties.put("maven.compiler.source", "${java.sourceCompatibility}")
                 developers {
@@ -56,14 +56,14 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/m4gshm/spring-data-mock.git")
-                    developerConnection.set("scm:git:https://github.com/m4gshm/spring-data-mock.git")
-                    url.set("https://github.com/m4gshm/spring-data-mock")
+                    connection.set("scm:git:https://github.com/m4gshm/spring-data-auto-mock.git")
+                    developerConnection.set("scm:git:https://github.com/m4gshm/spring-data-auto-mock.git")
+                    url.set("https://github.com/m4gshm/spring-data-auto-mock")
                 }
                 licenses {
                     license {
                         name.set("MIT License")
-                        url.set("https://github.com/m4gshm/spring-data-mock?tab=MIT-1-ov-file#readme")
+                        url.set("https://github.com/m4gshm/spring-data-auto-mock?tab=MIT-1-ov-file#readme")
                     }
                 }
             }
