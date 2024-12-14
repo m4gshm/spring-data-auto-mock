@@ -1,6 +1,7 @@
-package test.jpa.service;
+package mongo.service;
 
-import test.jpa.model.Client;
+
+import mongo.model.Client;
 
 import java.util.List;
 

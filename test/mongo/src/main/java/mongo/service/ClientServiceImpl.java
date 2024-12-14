@@ -1,11 +1,12 @@
-package test.jpa.service;
+package mongo.service;
 
 import lombok.RequiredArgsConstructor;
-import test.jpa.model.Client;
+import mongo.model.Client;
+import mongo.repo.ClientRepository;
 import org.springframework.stereotype.Service;
-import test.jpa.repo.ClientRepository;
 
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor

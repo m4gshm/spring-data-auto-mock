@@ -1,18 +1,18 @@
-package test.jpa.model;
+package mongo.model;
 
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Persistent;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Getter
 @Setter
 @ToString
-@Entity
+@Persistent
 @NoArgsConstructor
 public class Client {
     @Id

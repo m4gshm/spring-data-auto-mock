@@ -1,11 +1,12 @@
-package test.jpa.repo;
+package mongo.repo;
 
+import mongo.model.Client;
 import org.springframework.data.repository.CrudRepository;
-import test.jpa.model.Client;
 
 import java.util.List;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
+
     @Override
     List<Client> findAll();
 }

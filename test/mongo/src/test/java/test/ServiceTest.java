@@ -1,12 +1,13 @@
-package test.jpa;
+package test;
 
 import io.github.m4gshm.spring.data.mock.EnableAutoRepositoryMocks;
+import mongo.MongoApplication;
+import mongo.model.Client;
+import mongo.repo.ClientRepository;
+import mongo.service.ClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import test.jpa.model.Client;
-import test.jpa.repo.ClientRepository;
-import test.jpa.service.ClientService;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @EnableAutoRepositoryMocks
-@SpringBootTest(classes = {JpaApplication.class, AggregatedRepositoryFactory.class})
+@SpringBootTest(classes = {MongoApplication.class, AggregatedRepositoryFactory.class})
 public class ServiceTest {
 
     @Autowired

@@ -1,10 +1,10 @@
-package test.jpa.api;
+package mongo.api;
 
 import lombok.RequiredArgsConstructor;
+import mongo.model.Client;
+import mongo.service.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import test.jpa.model.Client;
-import test.jpa.service.ClientService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package test.jpa;
+package test;
 
 import io.github.m4gshm.spring.data.mock.RepositoryFactory;
 import lombok.RequiredArgsConstructor;
