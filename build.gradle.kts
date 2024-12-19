@@ -1,10 +1,12 @@
 plugins {
     `java-library`
     `maven-publish`
+    signing
+    id("com.gradleup.nmcp").version("0.0.8")
 }
 
-group = "github.m4gshm"
-version = "0.0.1-SNAPSHOT"
+group = "io.github.m4gshm"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -74,5 +76,21 @@ publishing {
         maven("file://$rootDir/../m4gshm.github.io/maven2") {
             name = "GithubMavenRepo"
         }
+    }
+}
+
+signing {
+    val extension = extensions.getByName("publishing") as PublishingExtension
+    sign(extension.publications)
+}
+
+nmcp {
+    publishAllProjectsProbablyBreakingProjectIsolation {
+        val ossrhUsername = project.properties["ossrhUsername"] as String?
+        val ossrhPassword = project.properties["ossrhPassword"] as String?
+        username.set(ossrhUsername)
+        password.set(ossrhPassword)
+        publicationType = "USER_MANAGED"
+//        publicationType = "AUTOMATIC"
     }
 }
