@@ -10,12 +10,12 @@ import java.lang.reflect.Method;
 import static io.github.m4gshm.spring.data.mock.RepositoryFactory.DEFAULT;
 import static java.util.Objects.requireNonNull;
 
-public class MockRepositoryFactoryBeanSupport extends RepositoryFactoryBeanSupport {
+public class MockRepositoryWrapperFactoryBean extends RepositoryFactoryBeanSupport {
 
     private final RepositoryFactory repositoryFactory;
     private final RepositoryFactoryBeanSupport<? extends Repository<?, ?>, ?, ?> repositoryFactoryBean;
 
-    public MockRepositoryFactoryBeanSupport(
+    public MockRepositoryWrapperFactoryBean(
             Class<? extends Repository<?, ?>> repositoryInterface, RepositoryFactory repositoryFactory,
             RepositoryFactoryBeanSupport<? extends Repository<?, ?>, ?, ?> repositoryFactoryBean
     ) {
@@ -43,7 +43,7 @@ public class MockRepositoryFactoryBeanSupport extends RepositoryFactoryBeanSuppo
                 repositoryFactoryBean.getClass().getName() + ".createRepositoryFactory"
         ).setAccessible(true);
         var repositoryFactorySupport = (RepositoryFactorySupport) createRepositoryFactoryM.invoke(repositoryFactoryBean);
-        return new MockRepositoryFactorySupport(repositoryFactorySupport, repositoryFactory);
+        return new MockRepositoryFactoryWrapper(repositoryFactorySupport, repositoryFactory);
     }
 
 }
