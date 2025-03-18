@@ -1,6 +1,6 @@
 package test;
 
-import io.github.m4gshm.spring.data.mock.EnableAutoRepositoryMocks;
+import io.github.m4gshm.spring.data.mock.ReplaceRepositoriesByMocks;
 import mongo.MongoApplication;
 import mongo.model.Client;
 import mongo.repo.ClientRepository;
@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@EnableAutoRepositoryMocks
+@ReplaceRepositoriesByMocks
 @SpringBootTest(classes = {MongoApplication.class, AggregatedRepositoryFactory.class})
-public class ServiceTest {
+public class ReplaceMongoReposTest {
 
     @Autowired
     ClientService clientService;
@@ -28,7 +28,7 @@ public class ServiceTest {
     AggregatedRepositoryFactory repositoryFactory;
 
     @Test
-    public void simpleMockTest() {
+    public void replaceMongoReposByMocksTest() {
         var client = new Client();
         when(clientRepository.findById(eq(1L))).thenAnswer(invocationOnMock -> Optional.of(client));
 

@@ -2,26 +2,23 @@ package test;
 
 import io.github.m4gshm.spring.data.mock.RepositoryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.core.support.RepositoryComposition;
+import org.springframework.data.repository.core.support.RepositoryComposition.RepositoryFragments;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RequiredArgsConstructor
 public class AggregatedRepositoryFactory implements RepositoryFactory {
-    private final Set<Object> repos = new HashSet<>();
+    private final Map<Class, Set<Object>> repos = new HashMap<>();
 
     @Override
-    public <T> T getRepository(Class<T> repositoryInterface, RepositoryComposition.RepositoryFragments fragments) {
+    public <T> T getRepository(Class<T> repositoryInterface, RepositoryFragments fragments) {
         var repository = DEFAULT.getRepository(repositoryInterface, fragments);
-        repos.add(repository);
+        repos.computeIfAbsent(repository.getClass(), k -> new HashSet<>()).add(repository);
         return repository;
     }
 
-    public List<Object> getRepos() {
-        return new ArrayList<>(repos);
+    public Collection<Object> getRepos(Class type) {
+        return repos.getOrDefault(type, Set.of());
     }
 }

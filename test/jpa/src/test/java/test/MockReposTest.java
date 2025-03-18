@@ -1,25 +1,24 @@
 package test;
 
-import io.github.m4gshm.spring.data.mock.EnableAutoRepositoryMocks;
+import io.github.m4gshm.spring.data.mock.EnableMockRepositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import test.jpa.JpaApplication;
 import test.jpa.model.Client;
 import test.jpa.repo.ClientRepository;
 import test.jpa.service.ClientService;
+import test.jpa.service.ClientServiceImpl;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.aop.support.AopUtils.getTargetClass;
 
-@EnableAutoRepositoryMocks
-@SpringBootTest(classes = {JpaApplication.class, AggregatedRepositoryFactory.class})
-public class ServiceTest {
-
+@EnableMockRepositories(basePackageClasses = ClientRepository.class)
+@SpringBootTest(classes = {ClientServiceImpl.class, AggregatedRepositoryFactory.class})
+public class MockReposTest {
     @Autowired
     ClientService clientService;
     @Autowired
@@ -28,13 +27,16 @@ public class ServiceTest {
     AggregatedRepositoryFactory repositoryFactory;
 
     @Test
-    public void simpleMockTest() {
+    public void mocksTest() {
         var client = new Client();
         when(clientRepository.findById(eq(1L))).thenAnswer(invocationOnMock -> Optional.of(client));
 
         var result = clientService.getById(1L);
         assertSame(client, result);
 
-        assertTrue(repositoryFactory.getRepos().contains(clientRepository));
+        var targetClass = getTargetClass(clientRepository);
+        assertTrue(targetClass.getName().contains("$MockitoMock$"));
+        var repos = repositoryFactory.getRepos(targetClass);
+        assertEquals(1, repos.size());
     }
 }

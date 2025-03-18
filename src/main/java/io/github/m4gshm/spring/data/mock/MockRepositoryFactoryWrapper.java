@@ -20,7 +20,7 @@ import org.springframework.lang.Nullable;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class MockRepositoryFactorySupport extends RepositoryFactorySupport {
+public class MockRepositoryFactoryWrapper extends RepositoryFactorySupport {
     private final RepositoryFactorySupport repositoryFactorySupport;
     private final RepositoryFactory repositoryFactory;
 
