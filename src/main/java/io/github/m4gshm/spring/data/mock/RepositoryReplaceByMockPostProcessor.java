@@ -7,25 +7,26 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
 
+import static io.github.m4gshm.spring.data.mock.RepositoryFactory.DEFAULT;
 import static java.lang.reflect.Modifier.FINAL;
 import static java.util.Optional.ofNullable;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MockBeanPostProcessor implements BeanPostProcessor {
+public class RepositoryReplaceByMockPostProcessor implements BeanPostProcessor {
 
     private final ObjectProvider<RepositoryFactory> repositoryFactory;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (!(bean instanceof RepositoryFactoryBeanSupport<?, ?, ?>)) {
+        if (!(bean instanceof RepositoryFactoryBeanSupport<?, ?, ?>) || bean instanceof MockRepositoryFactoryBean) {
             return bean;
         }
         var repositoryFactoryBeanSupport = (RepositoryFactoryBeanSupport<?, ?, ?>) bean;
         var repositoryInterface = repositoryFactoryBeanSupport.getObjectType();
 
-        var repositoryFactory = ofNullable(this.repositoryFactory.getIfAvailable()).orElse(RepositoryFactory.DEFAULT);
-        var mockRepositoryFactoryBeanSupport = new MockRepositoryFactoryBeanSupport(repositoryInterface,
+        var repositoryFactory = ofNullable(this.repositoryFactory.getIfAvailable()).orElse(DEFAULT);
+        var mockRepositoryFactoryBeanSupport = new MockRepositoryWrapperFactoryBean(repositoryInterface,
                 repositoryFactory, repositoryFactoryBeanSupport);
         var fields = RepositoryFactoryBeanSupport.class.getDeclaredFields();
         for (var field : fields) {
