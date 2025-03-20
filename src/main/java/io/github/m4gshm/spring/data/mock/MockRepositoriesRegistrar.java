@@ -39,7 +39,8 @@ public class MockRepositoriesRegistrar extends RepositoryBeanDefinitionRegistrar
     }
 
     @Override
-    public void registerBeanDefinitions(@NonNull AnnotationMetadata metadata, @NonNull BeanDefinitionRegistry registry,
+    public void registerBeanDefinitions(@NonNull AnnotationMetadata metadata,
+                                        @NonNull BeanDefinitionRegistry registry,
                                         @NonNull BeanNameGenerator generator) {
 
         // Guard against calls for sub-classes

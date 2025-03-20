@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.aop.support.AopUtils.getTargetClass;
 
 @ReplaceRepositoriesByMocks
 @SpringBootTest(classes = {MongoApplication.class, AggregatedRepositoryFactory.class})
@@ -35,6 +35,9 @@ public class ReplaceMongoReposTest {
         var result = clientService.getById(1L);
         assertSame(client, result);
 
-        assertTrue(repositoryFactory.getRepos().contains(clientRepository));
+        var targetClass = getTargetClass(clientRepository);
+        assertTrue(targetClass.getName().contains("$MockitoMock$"));
+        var repos = repositoryFactory.getRepos(targetClass);
+        assertEquals(1, repos.size());
     }
 }
