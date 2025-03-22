@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.RepositoryQuery;
 
 import java.lang.reflect.Method;
 
+import static io.github.m4gshm.spring.data.mock.MockitoUtils.resettable;
 import static org.mockito.Mockito.mock;
 
 public class MockQueryLookupStrategy implements QueryLookupStrategy {
@@ -16,4 +17,5 @@ public class MockQueryLookupStrategy implements QueryLookupStrategy {
                                         ProjectionFactory factory, NamedQueries namedQueries) {
         return mock(RepositoryQuery.class);
     }
+
 }

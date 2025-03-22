@@ -22,7 +22,7 @@ import static org.springframework.aop.support.AopUtils.getTargetClass;
 public class MockMongoReposTest {
     @Autowired
     ClientService clientService;
-    @MockBean
+    @Autowired
     ClientRepository clientRepository;
     @Autowired
     AggregatedRepositoryFactory repositoryFactory;

@@ -5,6 +5,7 @@ import org.springframework.data.repository.core.support.RepositoryComposition.Re
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.github.m4gshm.spring.data.mock.MockitoUtils.resettable;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 
@@ -20,7 +21,7 @@ public interface RepositoryFactory {
             if (exists != null && repositoryInterface.isAssignableFrom(exists.getClass())) {
                 return (T) exists;
             }
-            T mock = mock(repositoryInterface, CALLS_REAL_METHODS);
+            T mock = mock(repositoryInterface, resettable().defaultAnswer(CALLS_REAL_METHODS));
             repos.put(repositoryInterface, mock);
             return mock;
         }

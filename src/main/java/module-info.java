@@ -8,4 +8,6 @@ module io.github.m4gshm.spring.data.mock {
     requires spring.context;
     requires spring.core;
     requires spring.data.commons;
+    requires spring.test;
+    requires spring.boot.test;
 }

@@ -13,6 +13,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
@@ -39,5 +41,12 @@ public class ReplaceJpaReposTest {
         assertTrue(targetClass.getName().contains("$MockitoMock$"));
         var repos = repositoryFactory.getRepos(targetClass);
         assertEquals(1, repos.size());
+        verify(clientRepository, times(1)).findById(eq(1L));
+    }
+
+    @Test
+    public void secondMocksTest() {
+        clientService.getById(1L);
+        verify(clientRepository, times(1)).findById(eq(1L));
     }
 }

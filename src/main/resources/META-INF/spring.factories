@@ -1,0 +1,3 @@
+org.springframework.test.context.TestExecutionListener=\
+io.github.m4gshm.spring.data.mock.ResetReositoryMocksTestExecutionListener
+
