@@ -1,5 +1,6 @@
 module io.github.m4gshm.spring.data.mock {
     exports io.github.m4gshm.spring.data.mock;
+    opens io.github.m4gshm.spring.data.mock;
     requires static lombok;
     requires static org.slf4j;
     requires org.mockito;

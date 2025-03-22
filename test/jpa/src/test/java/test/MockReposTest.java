@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
-@EnableMockRepositories
+@EnableMockRepositories(basePackageClasses = ClientRepository.class)
 @SpringBootTest(classes = {ClientServiceImpl.class, AggregatedRepositoryFactory.class})
 public class MockReposTest {
     @Autowired
