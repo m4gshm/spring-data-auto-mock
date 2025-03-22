@@ -1,6 +1,5 @@
 package io.github.m4gshm.spring.data.mock;
 
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 
@@ -12,7 +11,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation enables mock repositories (TODO).
+ * Annotation enables mock repositories. If no base package is configured through either {@link #value()},
+ * {@link #basePackages()} or {@link #basePackageClasses()} it will trigger scanning of the package of annotated class.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
