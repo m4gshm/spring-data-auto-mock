@@ -1,19 +1,30 @@
 package io.github.m4gshm.spring.data.mock;
 
-import org.mockito.Mockito;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
+import org.springframework.data.repository.query.QueryLookupStrategy;
+import org.springframework.data.repository.query.QueryLookupStrategy.Key;
+import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
 
-import static io.github.m4gshm.spring.data.mock.RepositoryFactory.DEFAULT;
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
 
 public class MockRepositoryFactory extends RepositoryFactorySupport {
     private final RepositoryFactory repositoryFactory;
+    private final QueryLookupStrategyFactory queryLookupStrategyFactory;
 
-    public MockRepositoryFactory(RepositoryFactory repositoryFactory) {
-        this.repositoryFactory = (repositoryFactory != null) ? repositoryFactory : DEFAULT;
+    public MockRepositoryFactory(RepositoryFactory repositoryFactory,
+                                 QueryLookupStrategyFactory queryLookupStrategyFactory) {
+        this.repositoryFactory = repositoryFactory != null
+                ? repositoryFactory
+                : RepositoryFactory.DEFAULT;
+        this.queryLookupStrategyFactory = queryLookupStrategyFactory != null
+                ? queryLookupStrategyFactory
+                : QueryLookupStrategyFactory.DEFAULT;
     }
 
     @Override
@@ -39,5 +50,11 @@ public class MockRepositoryFactory extends RepositoryFactorySupport {
     @Override
     protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
         return metadata.getRepositoryInterface();
+    }
+
+    @Override
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
+            Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
+        return ofNullable(queryLookupStrategyFactory.getQueryLookupStrategy(key, evaluationContextProvider));
     }
 }

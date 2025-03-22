@@ -10,7 +10,8 @@ module io.github.m4gshm.spring.data.mock.test.jpa {
     opens test.jpa.repo;
     opens test.jpa.service;
     requires static lombok;
+    requires jdk.unsupported;
     requires spring.web;
     requires spring.data.commons;
-    requires jdk.unsupported;
+    requires spring.data.jpa;
 }

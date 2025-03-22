@@ -5,8 +5,6 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
-import static io.github.m4gshm.spring.data.mock.RepositoryFactory.DEFAULT;
-
 public class MockRepositoryFactoryBean<T extends Repository<S, ID>, S, ID> extends RepositoryFactoryBeanSupport<T, S, ID> {
 
     private final RepositoryFactory repositoryFactory;
@@ -14,11 +12,11 @@ public class MockRepositoryFactoryBean<T extends Repository<S, ID>, S, ID> exten
     protected MockRepositoryFactoryBean(Class<? extends T> repositoryInterface,
                                         ObjectProvider<RepositoryFactory> repositoryFactory) {
         super(repositoryInterface);
-        this.repositoryFactory = repositoryFactory.getIfAvailable(() -> DEFAULT);
+        this.repositoryFactory = repositoryFactory.getIfAvailable(() -> RepositoryFactory.DEFAULT);
     }
 
     @Override
     protected RepositoryFactorySupport createRepositoryFactory() {
-        return new MockRepositoryFactory(repositoryFactory);
+        return new MockRepositoryFactory(repositoryFactory, QueryLookupStrategyFactory.DEFAULT);
     }
 }
