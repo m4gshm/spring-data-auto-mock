@@ -1,13 +1,14 @@
 package test;
 
 import io.github.m4gshm.spring.data.mock.EnableMockRepositories;
+import mongo.model.Client;
+import mongo.repo.ClientRepository;
+import mongo.service.ClientService;
+import mongo.service.ClientServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import test.jpa.model.Client;
-import test.jpa.repo.ClientRepository;
-import test.jpa.service.ClientService;
-import test.jpa.service.ClientServiceImpl;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
@@ -18,10 +19,10 @@ import static org.springframework.aop.support.AopUtils.getTargetClass;
 
 @EnableMockRepositories(basePackageClasses = ClientRepository.class)
 @SpringBootTest(classes = {ClientServiceImpl.class, AggregatedRepositoryFactory.class})
-public class MockReposTest {
+public class MockMongoReposTest {
     @Autowired
     ClientService clientService;
-    @Autowired
+    @MockBean
     ClientRepository clientRepository;
     @Autowired
     AggregatedRepositoryFactory repositoryFactory;
