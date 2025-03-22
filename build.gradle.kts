@@ -79,10 +79,10 @@ publishing {
     }
 }
 
-//signing {
-//    val extension = extensions.getByName("publishing") as PublishingExtension
-//    sign(extension.publications)
-//}
+signing {
+    val extension = extensions.getByName("publishing") as PublishingExtension
+    sign(extension.publications)
+}
 
 nmcp {
     publishAllProjectsProbablyBreakingProjectIsolation {
