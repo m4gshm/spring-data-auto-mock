@@ -10,4 +10,5 @@ module io.github.m4gshm.spring.data.mock {
     requires spring.data.commons;
     requires spring.test;
     requires spring.boot.test;
+    requires java.annotation;
 }

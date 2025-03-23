@@ -1,5 +1,7 @@
 package io.github.m4gshm.spring.data.mock;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
@@ -13,19 +15,10 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+@RequiredArgsConstructor
 public class MockRepositoryFactory extends RepositoryFactorySupport {
-    private final RepositoryFactory repositoryFactory;
-    private final QueryLookupStrategyFactory queryLookupStrategyFactory;
-
-    public MockRepositoryFactory(RepositoryFactory repositoryFactory,
-                                 QueryLookupStrategyFactory queryLookupStrategyFactory) {
-        this.repositoryFactory = repositoryFactory != null
-                ? repositoryFactory
-                : RepositoryFactory.DEFAULT;
-        this.queryLookupStrategyFactory = queryLookupStrategyFactory != null
-                ? queryLookupStrategyFactory
-                : QueryLookupStrategyFactory.DEFAULT;
-    }
+    private final @NonNull RepositoryFactory repositoryFactory;
+    private final @NonNull QueryLookupStrategyFactory queryLookupStrategyFactory;
 
     @Override
     public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {

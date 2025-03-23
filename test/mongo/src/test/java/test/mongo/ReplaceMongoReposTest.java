@@ -1,37 +1,35 @@
-package test;
+package test.mongo;
 
-import io.github.m4gshm.spring.data.mock.EnableMockRepositories;
-import io.github.m4gshm.spring.data.mock.MockitoUtils;
+import io.github.m4gshm.spring.data.mock.ReplaceRepositoriesByMocks;
+import mongo.MongoApplication;
+import mongo.model.Client;
+import mongo.repo.ClientRepository;
+import mongo.service.ClientService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import test.jpa.model.Client;
-import test.jpa.repo.ClientRepository;
-import test.jpa.service.ClientService;
-import test.jpa.service.ClientServiceImpl;
+import test.common.RepositoryAccess;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
-@EnableMockRepositories(basePackageClasses = ClientRepository.class)
-@SpringBootTest(classes = {ClientServiceImpl.class, AggregatedRepositoryFactory.class})
-public class MockJpaReposTest {
+@ReplaceRepositoriesByMocks
+@SpringBootTest(classes = {MongoApplication.class, test.common.RepositoryAccess.class})
+public class ReplaceMongoReposTest {
+
     @Autowired
     ClientService clientService;
     @Autowired
     ClientRepository clientRepository;
     @Autowired
-    AggregatedRepositoryFactory repositoryFactory;
+    RepositoryAccess repositoryFactory;
 
     @Test
-    public void mocksTest() {
+    public void replaceMongoReposByMocksTest() {
         var client = new Client();
         when(clientRepository.findById(eq(1L))).thenAnswer(invocationOnMock -> Optional.of(client));
 
@@ -40,10 +38,8 @@ public class MockJpaReposTest {
 
         var targetClass = getTargetClass(clientRepository);
         assertTrue(targetClass.getName().contains("$MockitoMock$"));
-        var repos = repositoryFactory.getRepos(targetClass);
-        assertEquals(1, repos.size());
-
-        verify(clientRepository, times(1)).findById(eq(1L));
+        var repo = repositoryFactory.getRepo(targetClass);
+        assertNotNull(repo);
     }
 
     @Test

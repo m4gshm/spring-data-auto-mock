@@ -14,4 +14,6 @@ module io.github.m4gshm.spring.data.mock.test.jpa {
     requires spring.web;
     requires spring.data.commons;
     requires spring.data.jpa;
+    requires spring.boot.autoconfigure;
+    requires spring.boot;
 }

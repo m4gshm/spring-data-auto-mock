@@ -1,21 +1,20 @@
 package io.github.m4gshm.spring.data.mock;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
 
-import static io.github.m4gshm.spring.data.mock.RepositoryFactory.DEFAULT;
 import static java.lang.reflect.Modifier.FINAL;
-import static java.util.Optional.ofNullable;
 
 @Slf4j
-@RequiredArgsConstructor
+@Getter
+@Setter
 public class RepositoryReplaceByMockPostProcessor implements BeanPostProcessor {
 
-    private final ObjectProvider<RepositoryFactory> repositoryFactory;
+    private boolean resettable;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -25,9 +24,7 @@ public class RepositoryReplaceByMockPostProcessor implements BeanPostProcessor {
         var repositoryFactoryBeanSupport = (RepositoryFactoryBeanSupport<?, ?, ?>) bean;
         var repositoryInterface = repositoryFactoryBeanSupport.getObjectType();
 
-        var repositoryFactory = ofNullable(this.repositoryFactory.getIfAvailable()).orElse(DEFAULT);
-        var mockRepositoryFactoryBeanSupport = new MockRepositoryWrapperFactoryBean(repositoryInterface,
-                repositoryFactory, repositoryFactoryBeanSupport);
+        var mockRepositoryFactoryBeanSupport = new MockRepositoryFactoryBean(repositoryInterface, resettable);
         var fields = RepositoryFactoryBeanSupport.class.getDeclaredFields();
         for (var field : fields) {
             try {
@@ -44,4 +41,5 @@ public class RepositoryReplaceByMockPostProcessor implements BeanPostProcessor {
         }
         return mockRepositoryFactoryBeanSupport;
     }
+
 }

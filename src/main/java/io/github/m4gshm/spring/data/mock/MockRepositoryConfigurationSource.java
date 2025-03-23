@@ -33,8 +33,4 @@ class MockRepositoryConfigurationSource extends AnnotationRepositoryConfiguratio
         return empty();
     }
 
-    @Override
-    public Optional<String> getRepositoryFactoryBeanClassName() {
-        return empty();
-    }
 }

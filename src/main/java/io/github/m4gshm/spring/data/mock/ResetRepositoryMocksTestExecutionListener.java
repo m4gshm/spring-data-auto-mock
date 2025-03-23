@@ -19,9 +19,9 @@ import static java.util.Arrays.stream;
 import static java.util.Optional.ofNullable;
 import static org.springframework.util.ClassUtils.isPresent;
 
-public class ResetReositoryMocksTestExecutionListener extends AbstractTestExecutionListener {
+public class ResetRepositoryMocksTestExecutionListener extends AbstractTestExecutionListener {
     private static final boolean MOCKITO_IS_PRESENT = isPresent("org.mockito.MockSettings",
-            ResetReositoryMocksTestExecutionListener.class.getClassLoader());
+            ResetRepositoryMocksTestExecutionListener.class.getClassLoader());
 
     private static boolean isSingleton(String name, ConfigurableListableBeanFactory beanFactory,
                                        Collection<String> instantiatedSingletons) {
@@ -63,7 +63,7 @@ public class ResetReositoryMocksTestExecutionListener extends AbstractTestExecut
                 .filter(Objects::nonNull)
                 .filter(MockitoUtils::isResettable)
                 .forEach(Mockito::reset);
-        ofNullable(applicationContext.getParent()).ifPresent(ResetReositoryMocksTestExecutionListener::resetMocks);
+        ofNullable(applicationContext.getParent()).ifPresent(ResetRepositoryMocksTestExecutionListener::resetMocks);
     }
 
     @Override

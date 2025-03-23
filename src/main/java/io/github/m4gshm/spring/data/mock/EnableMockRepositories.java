@@ -1,14 +1,10 @@
 package io.github.m4gshm.spring.data.mock;
 
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Annotation enables mock repositories. If no base package is configured through either {@link #value()},
@@ -49,5 +45,19 @@ public @interface EnableMockRepositories {
      * Specifies which types are not eligible for component scanning.
      */
     Filter[] excludeFilters() default {};
+
+    /**
+     * Returns the {@link FactoryBean} class to be used for each repository instance. Defaults to
+     * {@link MockRepositoryFactoryBean}.
+     *
+     * @return {@link MockRepositoryFactoryBean} by default.
+     */
+    Class<?> repositoryFactoryBeanClass() default MockRepositoryFactoryBean.class;
+
+    /**
+     * Resets the mocked repositories after a Spring test is complete.
+     * @return true by default.
+     */
+    boolean resetAfterTest() default true;
 
 }
