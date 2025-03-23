@@ -4,7 +4,10 @@ import lombok.NonNull;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
+
+import java.util.stream.Stream;
 
 import static org.springframework.beans.factory.config.BeanDefinition.ROLE_INFRASTRUCTURE;
 
@@ -16,8 +19,11 @@ public class RepositoryReplaceRegistrar implements ImportBeanDefinitionRegistrar
     public void registerBeanDefinitions(@NonNull AnnotationMetadata importingClassMetadata,
                                         @NonNull BeanDefinitionRegistry registry) {
         if (!registry.containsBeanDefinition(BEAN_NAME)) {
-            var replaceRepositoriesByMocksMergedAnnotation = importingClassMetadata.getAnnotations().get(ReplaceRepositoriesByMocks.class);
-            boolean resetAfterTest = replaceRepositoriesByMocksMergedAnnotation.getBoolean("resetAfterTest");
+            var annotations = importingClassMetadata.getAnnotations();
+            var enableMockRepositoriesMergedAnnotation = annotations.get(EnableMockRepositories.class);
+            boolean resetAfterTest = Stream.of(enableMockRepositoriesMergedAnnotation)
+                    .filter(MergedAnnotation::isPresent)
+                    .anyMatch(a -> a.getBoolean("resetAfterTest"));
             var definition = BeanDefinitionBuilder
                     .rootBeanDefinition(RepositoryReplaceByMockPostProcessor.class)
                     .addPropertyValue("resettable", resetAfterTest)

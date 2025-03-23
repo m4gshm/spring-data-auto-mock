@@ -4,17 +4,23 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Annotation enables mock repositories. If no base package is configured through either {@link #value()},
+ * Annotation enables mock repositories or replaces real repositories like Jpa or Mongo with mock ones.
+ * If no base package is configured through either {@link #value()},
  * {@link #basePackages()} or {@link #basePackageClasses()} it will trigger scanning of the package of annotated class.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import(MockRepositoriesRegistrar.class)
+@Import({MockRepositoriesRegistrar.class, RepositoryReplaceRegistrar.class})
 public @interface EnableMockRepositories {
     /**
      * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation declarations e.g.:
@@ -56,6 +62,7 @@ public @interface EnableMockRepositories {
 
     /**
      * Resets the mocked repositories after a Spring test is complete.
+     *
      * @return true by default.
      */
     boolean resetAfterTest() default true;

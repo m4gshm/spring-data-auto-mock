@@ -1,6 +1,6 @@
 package test.mongo;
 
-import io.github.m4gshm.spring.data.mock.ReplaceRepositoriesByMocks;
+import io.github.m4gshm.spring.data.mock.EnableMockRepositories;
 import mongo.MongoApplication;
 import mongo.model.Client;
 import mongo.repo.ClientRepository;
@@ -12,13 +12,17 @@ import test.common.RepositoryAccess;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.aop.support.AopUtils.getTargetClass;
 
-@ReplaceRepositoriesByMocks
-@SpringBootTest(classes = {MongoApplication.class, test.common.RepositoryAccess.class})
+@EnableMockRepositories
+@SpringBootTest(classes = {MongoApplication.class, RepositoryAccess.class})
 public class ReplaceMongoReposTest {
 
     @Autowired
