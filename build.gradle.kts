@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.m4gshm"
-version = "0.0.1"
+version = "0.0.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -17,9 +17,9 @@ configurations.annotationProcessor {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.36")
+    compileOnly("org.projectlombok:lombok:1.18.38")
 
-    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("org.slf4j:slf4j-api:1.7.32")
 
     val springVer = "5.3.16"
     val springBootVer = "2.7.18"
@@ -46,7 +46,7 @@ publishing {
     publications {
         create<MavenPublication>("java") {
             pom {
-                description.set("todo")
+                description.set("Library for automatic creation of repository mocks")
                 url.set("https://github.com/m4gshm/spring-data-auto-mock")
                 properties.put("maven.compiler.target", "${java.targetCompatibility}")
                 properties.put("maven.compiler.source", "${java.sourceCompatibility}")
@@ -79,9 +79,15 @@ publishing {
     }
 }
 
+val isReleaseVersion by project.extra { !version.toString().endsWith("SNAPSHOT") }
+
 signing {
     val extension = extensions.getByName("publishing") as PublishingExtension
     sign(extension.publications)
+}
+
+tasks.withType<Sign>().configureEach {
+    onlyIf("isReleaseVersion is set") { project.extra["isReleaseVersion"] as Boolean }
 }
 
 nmcp {
