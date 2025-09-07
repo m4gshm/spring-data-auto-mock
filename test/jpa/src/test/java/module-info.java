@@ -10,4 +10,5 @@ module io.github.m4gshm.spring.data.mock.test.jpa.test {
     requires spring.aop;
     requires spring.context;
     requires io.github.m4gshm.spring.data.mock.test.common;
+    requires spring.boot.autoconfigure;
 }

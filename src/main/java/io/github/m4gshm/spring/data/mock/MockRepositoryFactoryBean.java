@@ -17,7 +17,7 @@ public class MockRepositoryFactoryBean<T extends Repository<S, ID>, S, ID> exten
     private boolean resettable;
 
     public MockRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
-        super(repositoryInterface);
+        this(repositoryInterface, true);
     }
 
     public MockRepositoryFactoryBean(Class<? extends T> repositoryInterface, boolean resettable) {
