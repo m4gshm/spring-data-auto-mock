@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.extra
+
 plugins {
     `java-library`
     `maven-publish`
@@ -87,7 +89,10 @@ signing {
 }
 
 tasks.withType<Sign>().configureEach {
-    onlyIf("isReleaseVersion is set") { project.extra["isReleaseVersion"] as Boolean }
+    onlyIf("isReleaseVersion is set") {
+        project.extra["isReleaseVersion"] as Boolean &&
+                project.extra["signing.secretKeyRingFile"] != null
+    }
 }
 
 nmcp {

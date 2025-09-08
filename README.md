@@ -2,4 +2,4 @@
 
 Data access layer mock utility.
 
-Helps avoid using a lot of `@MockBean` repositories in tests with a single `@EnableMockRepositories` annotation.
+Helps avoid using a lot of `@MockBean` repositories in tests with `@EnableMockRepositories` or `@ReplaceRepositoriesByMocks` annotation.
