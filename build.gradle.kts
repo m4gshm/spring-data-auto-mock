@@ -88,10 +88,11 @@ signing {
     sign(extension.publications)
 }
 
+
 tasks.withType<Sign>().configureEach {
-    onlyIf("isReleaseVersion is set") {
+    onlyIf("isReleaseVersion && signing.secretKeyRingFile are set") {
         project.extra["isReleaseVersion"] as Boolean &&
-                project.extra["signing.secretKeyRingFile"] != null
+                project.extra.has("signing.secretKeyRingFile"
     }
 }
 
