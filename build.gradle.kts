@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.m4gshm"
-version = "0.0.2-SNAPSHOT"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
