@@ -92,7 +92,7 @@ signing {
 tasks.withType<Sign>().configureEach {
     onlyIf("isReleaseVersion && signing.secretKeyRingFile are set") {
         project.extra["isReleaseVersion"] as Boolean &&
-                project.extra.has("signing.secretKeyRingFile"
+                project.extra.has("signing.secretKeyRingFile")
     }
 }
 
