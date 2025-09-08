@@ -1,18 +1,33 @@
 package io.github.m4gshm.spring.data.mock;
 
-import org.springframework.data.repository.core.support.RepositoryComposition;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.core.support.RepositoryComposition.RepositoryFragments;
 
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mock;
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.github.m4gshm.spring.data.mock.MockitoUtils.resettable;
+import static org.mockito.Mockito.*;
 
 @FunctionalInterface
 public interface RepositoryFactory {
-    RepositoryFactory DEFAULT = new RepositoryFactory() {
-        @Override
-        public <T> T getRepository(Class<T> repositoryInterface, RepositoryComposition.RepositoryFragments fragments) {
-            return mock(repositoryInterface, CALLS_REAL_METHODS);
-        }
-    };
+    <T> T getRepository(Class<T> repositoryInterface, RepositoryFragments fragments);
 
-    <T> T getRepository(Class<T> repositoryInterface, RepositoryComposition.RepositoryFragments fragments);
+    @RequiredArgsConstructor
+    class DefaultRepositoryFactory implements RepositoryFactory {
+        private final Map<Class<?>, Object> repos = new HashMap<>();
+        private final boolean resettable;
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getRepository(Class<T> repositoryInterface, RepositoryFragments fragments) {
+            var exists = repos.get(repositoryInterface);
+            if (exists != null && repositoryInterface.isAssignableFrom(exists.getClass())) {
+                return (T) exists;
+            }
+            T mock = mock(repositoryInterface, (this.resettable ? resettable() : withSettings()).defaultAnswer(CALLS_REAL_METHODS));
+            repos.put(repositoryInterface, mock);
+            return mock;
+        }
+    }
 }

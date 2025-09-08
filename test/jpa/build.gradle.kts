@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    id("io.spring.dependency-management") version "1.1.7"
 }
 group = "github.m4gshm"
 
@@ -13,6 +14,14 @@ configurations.annotationProcessor {
 
 configurations.testAnnotationProcessor {
     extendsFrom(configurations.testCompileOnly.get())
+}
+
+dependencyManagement {
+    dependencies {
+        //for compatibility with jakarta.activation instead of javax.activation
+        dependency("org.jvnet.staxex:stax-ex:1.8.1")
+        dependency("org.glassfish.jaxb:jaxb-runtime:2.3.2")
+    }
 }
 
 dependencies {
@@ -35,6 +44,7 @@ dependencies {
     implementation("com.h2database:h2:2.3.232")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVer")
+    testImplementation(project(":test:common"))
 }
 
 tasks.test {
