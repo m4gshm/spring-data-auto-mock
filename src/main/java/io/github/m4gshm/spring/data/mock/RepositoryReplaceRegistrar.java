@@ -18,7 +18,7 @@ public class RepositoryReplaceRegistrar implements ImportBeanDefinitionRegistrar
 
     private static final String BEAN_NAME = RepositoryReplaceByMockPostProcessor.class.getSimpleName();
 
-    private static boolean getBoolean(MergedAnnotation<EnableMockRepositories> mergedAnnotation, String property) {
+    private static boolean getBoolean(MergedAnnotation<ReplaceRepositoriesByMocks> mergedAnnotation, String property) {
         return Stream.of(mergedAnnotation)
                 .filter(MergedAnnotation::isPresent)
                 .anyMatch(a -> a.getBoolean(property));
@@ -29,7 +29,7 @@ public class RepositoryReplaceRegistrar implements ImportBeanDefinitionRegistrar
                                         @NonNull BeanDefinitionRegistry registry) {
         if (!registry.containsBeanDefinition(BEAN_NAME)) {
             var annotations = importingClassMetadata.getAnnotations();
-            var mergedAnnotation = annotations.get(EnableMockRepositories.class);
+            var mergedAnnotation = annotations.get(ReplaceRepositoriesByMocks.class);
             registry.registerBeanDefinition(BEAN_NAME, BeanDefinitionBuilder
                     .rootBeanDefinition(RepositoryReplaceByMockPostProcessor.class)
                     .addPropertyValue(Properties.SOURCE.name, mergedAnnotation.getSource())

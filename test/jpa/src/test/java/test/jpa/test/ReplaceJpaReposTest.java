@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import test.common.RepositoryAccess;
 import test.jpa.JpaApplication;
 import test.jpa.model.Client;
 import test.jpa.repo.ClientRepository;
 import test.jpa.service.ClientService;
 
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -35,6 +39,8 @@ public class ReplaceJpaReposTest {
     ClientRepository clientRepository;
     @Autowired
     RepositoryAccess repositoryFactory;
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Test
     public void replaceJpaReposByMockTest() {
@@ -49,6 +55,21 @@ public class ReplaceJpaReposTest {
         var repo = repositoryFactory.getRepo(targetClass);
         assertNotNull(repo);
         verify(clientRepository, times(1)).findById(eq(1L));
+
+        assertFalse(applicationContext.containsBean(JpaRepositoryFactoryBean.class.getName()));
+        assertFalse(applicationContext.containsBean(JpaRepositoryFactoryBean.class.getName()));
+
+        List.of(
+                "emBeanDefinitionRegistrarPostProcessor",
+                "org.springframework.context.annotation.internalPersistenceAnnotationProcessor",
+                "jpaMappingContext",
+                "org.springframework.data.jpa.repository.support.JpaEvaluationContextExtension",
+                "org.springframework.data.jpa.util.JpaMetamodelCacheCleanup",
+                "jpaContext"
+        ).forEach(name -> {
+            assertFalse(applicationContext.containsBean(name));
+        });
+
     }
 
     @Test
