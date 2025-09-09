@@ -48,6 +48,7 @@ publishing {
     publications {
         create<MavenPublication>("java") {
             pom {
+                name.set(project.name)
                 description.set("Library for automatic creation of repository mocks")
                 url.set("https://github.com/m4gshm/spring-data-auto-mock")
                 properties.put("maven.compiler.target", "${java.targetCompatibility}")
